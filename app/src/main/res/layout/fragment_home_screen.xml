@@ -1,0 +1,347 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/hotel_home_base"
+    android:orientation="vertical"
+    tools:context="details.hotel.app.hoteldetails.UI.Fragments.HomeScreenFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <details.hotel.app.hoteldetails.Customs.CustomAdapters.AutoScrollImageAdapter
+                    android:id="@+id/hotel_images_scroller"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    />
+
+
+
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_margin="2dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/hotel_contact_image"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:src="@drawable/hotel_contact"/>
+
+
+                            <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/txt_color_black"
+                                android:textSize="12sp"
+                                android:text="Contact Us"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="3dp"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_margin="2dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/hotel_gallery_image"
+                                android:layout_gravity="center"
+                                android:src="@drawable/hotel_gallery"/>
+
+
+                            <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/txt_color_black"
+                                android:textSize="12sp"
+                                android:text="Gallery"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="3dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_margin="2dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/hotel_amenity_image"
+                                android:layout_gravity="center"
+                                android:src="@drawable/hotel_amenity"/>
+
+
+                            <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="3dp"
+                                android:gravity="center"
+                                android:text="Amenities"
+                                android:textColor="@color/txt_color_black"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/hotel_room_image"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:src="@drawable/hotel_bed"/>
+
+
+                            <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/txt_color_black"
+                                android:textSize="12sp"
+                                android:text="Rooms"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="3dp"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_margin="2dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/hotel_location_image"
+                                android:layout_gravity="center"
+                                android:src="@drawable/hotel_location"/>
+
+
+                            <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/txt_color_black"
+                                android:textSize="12sp"
+                                android:text="Location"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="3dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_margin="2dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/hotel_book_image"
+                                android:layout_gravity="center"
+                                android:src="@drawable/hotel_book"/>
+
+
+                            <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/txt_color_black"
+                                android:textSize="12sp"
+                                android:text="Book Now"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="3dp"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#000000"
+        app:contentInsetEnd="0dp"
+        android:visibility="gone"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_behavior="details.hotel.app.hoteldetails.Customs.CustomViews.ScrollingToolbarBehavior">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#000000"
+            android:orientation="vertical"
+            app:layout_behavior="details.hotel.app.hoteldetails.Customs.CustomViews.ScrollingToolbarBehavior">
+
+
+
+
+            <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="For inquiry"
+                android:textColor="#ffffff"
+                android:textSize="11.3sp" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="2dp"
+                    android:paddingBottom="5dp"
+                    android:background="@drawable/call_gradient_rect"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="5dp">
+
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/call_phone" />
+
+                    <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular
+                        android:id="@+id/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
+                        android:text="+91 97411 25630"
+                        android:textColor="#ffffff"
+                        android:textSize="12.7sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="2dp"
+                    android:background="@drawable/email_gradient_rect"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="5dp">
+
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/email" />
+
+                    <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular
+                        android:id="@+id/email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
+                        android:text="info@omgroupgokarna.com"
+                        android:textColor="#ffffff"
+                        android:textSize="12.7sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+</android.support.design.widget.CoordinatorLayout>
