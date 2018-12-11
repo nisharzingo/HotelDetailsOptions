@@ -18,6 +18,7 @@ import java.util.List;
 
 import details.hotel.app.hoteldetails.Adapter.RoomCategoriesListAdapter;
 import details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewRobotoregular;
+import details.hotel.app.hoteldetails.Model.AvailabiltyCheckPostData;
 import details.hotel.app.hoteldetails.Model.RoomCategories;
 import details.hotel.app.hoteldetails.R;
 import details.hotel.app.hoteldetails.Utils.ThreadExecuter;
@@ -80,6 +81,11 @@ public class BookAvailablityScreen extends AppCompatActivity {
             to = sdf.format(cal.getTime());
 
             mDateText.setText(""+from+" - "+to);
+
+
+            AvailabiltyCheckPostData avpd = new AvailabiltyCheckPostData();
+            avpd.setHotelId(1);
+            //avpd.setFromDate();
 
 
             if(bundle!=null){
