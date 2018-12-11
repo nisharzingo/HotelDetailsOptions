@@ -1,20 +1,32 @@
 package details.hotel.app.hoteldetails.UI.Activities;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import details.hotel.app.hoteldetails.Adapter.HotelListAdapter;
 import details.hotel.app.hoteldetails.Adapter.NavigationListAdapter;
+import details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewRobotoregular;
+import details.hotel.app.hoteldetails.Model.HotelDetails;
 import details.hotel.app.hoteldetails.Model.NavBarItems;
+import details.hotel.app.hoteldetails.Model.ProfileHotelTag;
 import details.hotel.app.hoteldetails.R;
 import details.hotel.app.hoteldetails.UI.Fragments.AmenityFragment;
 import details.hotel.app.hoteldetails.UI.Fragments.BookNowFragment;
@@ -23,6 +35,13 @@ import details.hotel.app.hoteldetails.UI.Fragments.GalleryFragment;
 import details.hotel.app.hoteldetails.UI.Fragments.HomeScreenFragment;
 import details.hotel.app.hoteldetails.UI.Fragments.LocationFragment;
 import details.hotel.app.hoteldetails.UI.Fragments.RoomsFragment;
+import details.hotel.app.hoteldetails.Utils.PreferenceHandler;
+import details.hotel.app.hoteldetails.Utils.ThreadExecuter;
+import details.hotel.app.hoteldetails.Utils.Util;
+import details.hotel.app.hoteldetails.WebAPI.HotelsDetailsAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.support.v4.view.GravityCompat.START;
 
@@ -33,9 +52,13 @@ public class HotelOptionsScreen extends AppCompatActivity {
     DrawerLayout baseLayout;
     ListView navBarListView;
     Toolbar mToolbar;
+    TextViewRobotoregular mSelectHotel;
+    LinearLayout mHotelListLay;
+    RecyclerView mHotelList;
 
 
     String[] title = null;
+    ArrayList<HotelDetails> hotelDetailsArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +74,11 @@ public class HotelOptionsScreen extends AppCompatActivity {
 
 
             navBarListView = (ListView) findViewById(R.id.navbar_list);
+            mSelectHotel = (TextViewRobotoregular) findViewById(R.id.select_hotel);
+            mHotelListLay = (LinearLayout) findViewById(R.id.hotel_list_layout);
+            mHotelList = (RecyclerView) findViewById(R.id.hotel_name);
+            mHotelList.setVisibility(View.GONE);
+
 
 
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, baseLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -58,7 +86,7 @@ public class HotelOptionsScreen extends AppCompatActivity {
             toggle.syncState();
 
             title = getResources().getStringArray(R.array.hotel_menu);
-
+            getTaggedHotels();
             setUpNavbar();
             displayMenu("Home");
 
@@ -72,6 +100,13 @@ public class HotelOptionsScreen extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                }
+            });
+
+            mSelectHotel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggle_contents();
                 }
             });
 
@@ -148,6 +183,182 @@ public class HotelOptionsScreen extends AppCompatActivity {
 
         }
 
+    }
+
+    public static void slide_down(Context ctx, View v) {
+
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+
+
+    public static void slide_up(Context ctx, View v) {
+
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_up);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+
+
+    public void toggle_contents(){
+
+        if(mHotelList.isShown()){
+            slide_up(this, mHotelList);
+            mHotelList.setVisibility(View.GONE);
+        }
+        else{
+            mHotelList.setVisibility(View.VISIBLE);
+            slide_down(this, mHotelList);
+        }
+    }
+
+
+    public void getTaggedHotels()
+    {
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+               // String authenticationString = Util.getToken(HotelOptionsScreen.this);//"Basic " +  Base64.encodeToString(authentication.getBytes(), Base64.NO_WRAP);
+                String authenticationString = "Basic TW9obmlBdmQ6ODIyMDgxOTcwNg==";
+                HotelsDetailsAPI hotelOperation = Util.getClient().create(HotelsDetailsAPI.class);
+                Call<ArrayList<ProfileHotelTag>> response = hotelOperation.getTaggedHotels(authenticationString,
+                        239);
+
+                response.enqueue(new Callback<ArrayList<ProfileHotelTag>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<ProfileHotelTag>> call, Response<ArrayList<ProfileHotelTag>> response) {
+                        System.out.println("GetHotelByProfileId = "+response.code());
+                        ArrayList<ProfileHotelTag> hotelDetailseResponse = response.body();
+
+                        if(response.code() == 200 || response.code() == 201 || response.code() == 204)
+                        {
+                            try{
+                                if(hotelDetailseResponse != null && hotelDetailseResponse.size() != 0)
+                                {
+
+
+                                    ArrayList<ProfileHotelTag> taggedProfiles = response.body();
+                                    hotelDetailsArrayList = new ArrayList<>();
+                                    if(hotelDetailsArrayList != null && hotelDetailsArrayList.size() != 0)
+                                    {
+                                        hotelDetailsArrayList.clear();
+                                    }
+
+                                    for (int i=0;i<taggedProfiles.size();i++)
+                                    {
+                                        if(taggedProfiles.get(i).getHotels() != null)
+                                        {
+                                            hotelDetailsArrayList.add(taggedProfiles.get(i).getHotels());
+                                        }
+                                    }
+                                    HotelListAdapter adapter = new HotelListAdapter(HotelOptionsScreen.this,hotelDetailsArrayList);
+                                    mHotelList.setAdapter(adapter);
+
+
+                                }
+                                else
+                                {
+
+                                    getHotelsByProfileId();
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                        else
+                        {
+                            Toast.makeText(HotelOptionsScreen.this,"Check your internet connection or please try after some time", Toast.LENGTH_LONG).show();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<ProfileHotelTag>> call, Throwable t) {
+
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void getHotelsByProfileId()
+    {
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                // String authenticationString = Util.getToken(HotelOptionsScreen.this);//"Basic " +  Base64.encodeToString(authentication.getBytes(), Base64.NO_WRAP);
+                String authenticationString = "Basic TW9obmlBdmQ6ODIyMDgxOTcwNg==";
+                HotelsDetailsAPI hotelOperation = Util.getClient().create(HotelsDetailsAPI.class);
+                Call<ArrayList<HotelDetails>> response = hotelOperation.getHotelByProfileId(authenticationString,
+                        239);
+
+                response.enqueue(new Callback<ArrayList<HotelDetails>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<HotelDetails>> call, Response<ArrayList<HotelDetails>> response) {
+                        System.out.println("GetHotelByProfileId = "+response.code());
+                        ArrayList<HotelDetails> hotelDetailseResponse = response.body();
+
+                        if(response.code() == 200)
+                        {
+                            try{
+                                if(hotelDetailseResponse != null && hotelDetailseResponse.size() != 0)
+                                {
+
+
+                                    hotelDetailsArrayList = response.body();
+                                    HotelListAdapter adapter = new HotelListAdapter(HotelOptionsScreen.this,hotelDetailsArrayList);
+                                    mHotelList.setAdapter(adapter);
+                                    //}
+                                }
+                                else
+                                {
+
+
+
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                        else
+                        {
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<HotelDetails>> call, Throwable t) {
+
+
+                    }
+                });
+            }
+        });
     }
 
 }

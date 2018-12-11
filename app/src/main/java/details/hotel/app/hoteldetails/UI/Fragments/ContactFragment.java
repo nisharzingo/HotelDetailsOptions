@@ -1,13 +1,20 @@
 package details.hotel.app.hoteldetails.UI.Fragments;
 
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewSFProDisplayRegular;
@@ -26,6 +33,7 @@ import retrofit2.Response;
 public class ContactFragment extends Fragment {
 
     TextViewSFProDisplayRegular mAddress,mHotelName;
+    LinearLayout mPhone,mEmail,mWhatsapp;
 
 
     public ContactFragment() {
@@ -44,7 +52,73 @@ public class ContactFragment extends Fragment {
             mAddress = (TextViewSFProDisplayRegular)view.findViewById(R.id.hotel_address);
             mHotelName = (TextViewSFProDisplayRegular)view.findViewById(R.id.hotel_name);
 
-            getHotel(98);
+            mPhone = (LinearLayout) view.findViewById(R.id.phone_number_lay);
+            mEmail = (LinearLayout)view.findViewById(R.id.email_lay);
+            mWhatsapp = (LinearLayout)view.findViewById(R.id.whatsapp_open);
+
+
+            mPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+
+                    if (ActivityCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:+919741125630"));
+                        startActivity(callIntent);
+                    }else{
+                        Toast.makeText(getActivity(), "Permission denied.Please give access in Settings", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+
+            });
+
+            mEmail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent i = new Intent(Intent.ACTION_SENDTO);
+                    i.setType("message/rfc822");
+                    i.setData(Uri.parse("mailto:"));
+                    i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"info@omgroupgokarna.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, "Inquiry");
+
+                    try {
+                        startActivity(Intent.createChooser(i, "Send mail..."));
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(getActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+
+            mWhatsapp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String digits = "\\d+";
+                    String mob_num = "9741125630";
+                    if (mob_num.matches(digits))
+                    {
+                        try {
+
+                            Uri uri = Uri.parse("whatsapp://send?phone=+91" + mob_num);
+                            Intent i = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(i);
+                        }
+                        catch (ActivityNotFoundException e){
+                            e.printStackTrace();
+                            Toast.makeText(getActivity(), "WhatsApp not installed.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
+            });
+           // getHotel(98);
             return view;
         }catch (Exception e){
             e.printStackTrace();

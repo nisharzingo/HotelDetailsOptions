@@ -7,17 +7,17 @@
     <ImageView
         android:id="@+id/hotel_image"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:scaleType="fitXY"
         android:background="@drawable/gulf"/>
 
 
 
 
-    <ImageView
+  <!--  <ImageView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:scaleType="fitXY"
-        android:background="#99000000"/>
+        android:background="#99000000"/>-->
 
 </FrameLayout>

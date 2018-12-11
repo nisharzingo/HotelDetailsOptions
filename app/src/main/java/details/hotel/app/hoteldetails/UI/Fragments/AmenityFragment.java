@@ -2,6 +2,7 @@ package details.hotel.app.hoteldetails.UI.Fragments;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import details.hotel.app.hoteldetails.Adapter.HotelAmenityListAdapter;
+import details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewRobotoregular;
 import details.hotel.app.hoteldetails.Model.HotelDetails;
 import details.hotel.app.hoteldetails.R;
 import details.hotel.app.hoteldetails.Utils.ThreadExecuter;
@@ -28,6 +33,8 @@ public class AmenityFragment extends Fragment {
 
     RecyclerView mAmenityList;
 
+    TextViewRobotoregular mCar,mGuestService,mDining,mMiscellaneous,mProperty,mRecreation;
+    LinearLayout mCarLay,mGuestLay,mDiningLay,mMisLay,mPropertyLay,mRecreationlay;
 
     public AmenityFragment() {
         // Required empty public constructor
@@ -44,7 +51,73 @@ public class AmenityFragment extends Fragment {
             View view = inflater.inflate(R.layout.fragment_amenity,container,false);
             mAmenityList = (RecyclerView)view.findViewById(R.id.hotel_amenity_list);
 
-            getHotel(1);
+            mCar = (TextViewRobotoregular)view.findViewById(R.id.car_parking);
+            mGuestService = (TextViewRobotoregular)view.findViewById(R.id.guest_services);
+            mDining = (TextViewRobotoregular)view.findViewById(R.id.inhouse_dining);
+            mMiscellaneous = (TextViewRobotoregular)view.findViewById(R.id.miscellaneous);
+            mProperty = (TextViewRobotoregular)view.findViewById(R.id.property_features);
+            mRecreation = (TextViewRobotoregular)view.findViewById(R.id.recreation_facilities);
+
+
+            mCarLay = (LinearLayout)view.findViewById(R.id.car_lay);
+            mGuestLay = (LinearLayout)view.findViewById(R.id.guest_lay);
+            mDiningLay= (LinearLayout)view.findViewById(R.id.dining_lay);
+            mMisLay = (LinearLayout)view.findViewById(R.id.mis_lay);
+            mPropertyLay = (LinearLayout)view.findViewById(R.id.property_lay);
+            mRecreationlay = (LinearLayout)view.findViewById(R.id.recreation_lay);
+
+            mCarLay.setVisibility(View.GONE);
+            mGuestLay.setVisibility(View.GONE);
+            mDiningLay.setVisibility(View.GONE);
+            mMisLay.setVisibility(View.GONE);
+            mPropertyLay.setVisibility(View.GONE);
+            mRecreationlay.setVisibility(View.GONE);
+
+
+            mCar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggle_contents(mCarLay);
+                }
+            });
+
+            mGuestService.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggle_contents(mGuestLay);
+                }
+            });
+
+            mDining.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggle_contents(mDiningLay);
+                }
+            });
+
+            mMiscellaneous.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggle_contents(mMisLay);
+                }
+            });
+
+            mProperty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggle_contents(mPropertyLay);
+                }
+            });
+
+            mRecreation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggle_contents(mRecreationlay);
+                }
+            });
+
+
+            //getHotel(1);
             return  view;
 
         }catch (Exception e){
@@ -115,5 +188,44 @@ public class AmenityFragment extends Fragment {
 
         });
     }
+
+    public static void slide_down(Context ctx, View v) {
+
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+
+
+    public static void slide_up(Context ctx, View v) {
+
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_up);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+
+
+    public void toggle_contents(final LinearLayout layout){
+
+        if(layout.isShown()){
+            slide_up(getActivity(), layout);
+            layout.setVisibility(View.GONE);
+        }
+        else{
+            layout.setVisibility(View.VISIBLE);
+            slide_down(getActivity(), layout);
+        }
+    }
+
 
 }
