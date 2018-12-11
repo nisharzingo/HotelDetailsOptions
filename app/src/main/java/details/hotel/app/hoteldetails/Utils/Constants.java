@@ -14,5 +14,7 @@ public class Constants {
     public static final String USER_PHONENUMER = "user_phonenumber";
     public static final String HOTEL_ID = "hotel_id";
     public static final String HOTEL_NAME = "hotel_name";
+    public static final int HOTEL_DATA_ID = 111;
+    public static final int PROFILE_DATA_ID = 239;
     public static final String auth_string = "Basic emluZ29ob3RlbHM6U3dvcmRmaXNoITI=";
 }

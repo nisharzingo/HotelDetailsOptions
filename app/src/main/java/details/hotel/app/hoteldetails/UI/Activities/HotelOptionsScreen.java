@@ -1,8 +1,8 @@
 package details.hotel.app.hoteldetails.UI.Activities;
 
-import android.app.ProgressDialog;
+
 import android.content.Context;
-import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -35,6 +35,7 @@ import details.hotel.app.hoteldetails.UI.Fragments.GalleryFragment;
 import details.hotel.app.hoteldetails.UI.Fragments.HomeScreenFragment;
 import details.hotel.app.hoteldetails.UI.Fragments.LocationFragment;
 import details.hotel.app.hoteldetails.UI.Fragments.RoomsFragment;
+import details.hotel.app.hoteldetails.Utils.Constants;
 import details.hotel.app.hoteldetails.Utils.PreferenceHandler;
 import details.hotel.app.hoteldetails.Utils.ThreadExecuter;
 import details.hotel.app.hoteldetails.Utils.Util;
@@ -52,9 +53,11 @@ public class HotelOptionsScreen extends AppCompatActivity {
     DrawerLayout baseLayout;
     ListView navBarListView;
     Toolbar mToolbar;
-    TextViewRobotoregular mSelectHotel;
+    TextViewRobotoregular mSelectHotel,mHotelName;
     LinearLayout mHotelListLay;
     RecyclerView mHotelList;
+
+    Snackbar snackbar;
 
 
     String[] title = null;
@@ -75,6 +78,7 @@ public class HotelOptionsScreen extends AppCompatActivity {
 
             navBarListView = (ListView) findViewById(R.id.navbar_list);
             mSelectHotel = (TextViewRobotoregular) findViewById(R.id.select_hotel);
+            mHotelName = (TextViewRobotoregular) findViewById(R.id.hotel_name_list);
             mHotelListLay = (LinearLayout) findViewById(R.id.hotel_list_layout);
             mHotelList = (RecyclerView) findViewById(R.id.hotel_name);
             mHotelList.setVisibility(View.GONE);
@@ -86,7 +90,9 @@ public class HotelOptionsScreen extends AppCompatActivity {
             toggle.syncState();
 
             title = getResources().getStringArray(R.array.hotel_menu);
-            getTaggedHotels();
+
+            init();
+
             setUpNavbar();
             displayMenu("Home");
 
@@ -103,12 +109,20 @@ public class HotelOptionsScreen extends AppCompatActivity {
                 }
             });
 
+            if(PreferenceHandler.getInstance(HotelOptionsScreen.this).getHotelName()!=null&&!PreferenceHandler.getInstance(HotelOptionsScreen.this).getHotelName().isEmpty()){
+
+                mHotelName.setText(""+PreferenceHandler.getInstance(HotelOptionsScreen.this).getHotelName());
+            }
+
             mSelectHotel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     toggle_contents();
                 }
             });
+
+
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -148,37 +162,58 @@ public class HotelOptionsScreen extends AppCompatActivity {
 
             case "Home":
                 Fragment homeFragment = new HomeScreenFragment();
-                transaction.replace(R.id.hotel_fragment_view,homeFragment).commit();
+                transaction.replace(R.id.hotel_fragment_view,homeFragment)
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+
+                        .commit();
                 break;
 
             case "Contact Us":
                 Fragment contactFragment = new ContactFragment();
-                transaction.replace(R.id.hotel_fragment_view,contactFragment).commit();
+                transaction.replace(R.id.hotel_fragment_view,contactFragment)
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
             case "Gallery":
                 Fragment galleryFragment = new GalleryFragment();
-                transaction.replace(R.id.hotel_fragment_view,galleryFragment).commit();
+                transaction.replace(R.id.hotel_fragment_view,galleryFragment)
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
             case "Amenities":
                 Fragment amenityFragment = new AmenityFragment();
-                transaction.replace(R.id.hotel_fragment_view,amenityFragment).commit();
+                transaction.replace(R.id.hotel_fragment_view,amenityFragment)
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
             case "Rooms":
                 Fragment RoomsFragment = new RoomsFragment();
-                transaction.replace(R.id.hotel_fragment_view,RoomsFragment).commit();
+                transaction.replace(R.id.hotel_fragment_view,RoomsFragment)
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
             case "Location":
                 Fragment locationFragment = new LocationFragment();
-                transaction.replace(R.id.hotel_fragment_view,locationFragment).commit();
+                transaction.replace(R.id.hotel_fragment_view,locationFragment)
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
             case "Book Now":
                 Fragment bookFragment = new BookNowFragment();
-                transaction.replace(R.id.hotel_fragment_view,bookFragment).commit();
+                transaction.replace(R.id.hotel_fragment_view,bookFragment)
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .addToBackStack(null)
+                        .commit();
                 break;
 
         }
@@ -236,7 +271,7 @@ public class HotelOptionsScreen extends AppCompatActivity {
                 String authenticationString = "Basic TW9obmlBdmQ6ODIyMDgxOTcwNg==";
                 HotelsDetailsAPI hotelOperation = Util.getClient().create(HotelsDetailsAPI.class);
                 Call<ArrayList<ProfileHotelTag>> response = hotelOperation.getTaggedHotels(authenticationString,
-                        239);
+                        Constants.PROFILE_DATA_ID);
 
                 response.enqueue(new Callback<ArrayList<ProfileHotelTag>>() {
                     @Override
@@ -272,7 +307,6 @@ public class HotelOptionsScreen extends AppCompatActivity {
                                 }
                                 else
                                 {
-
                                     getHotelsByProfileId();
                                 }
                             }catch (Exception e){
@@ -283,7 +317,19 @@ public class HotelOptionsScreen extends AppCompatActivity {
                         }
                         else
                         {
-                            Toast.makeText(HotelOptionsScreen.this,"Check your internet connection or please try after some time", Toast.LENGTH_LONG).show();
+
+                            snackbar = Snackbar
+                                    .make(baseLayout, "Something went wrong", Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("Retry", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+
+                                            init();
+
+                                        }
+                                    });
+                            snackbar.show();
+
                         }
 
 
@@ -292,6 +338,17 @@ public class HotelOptionsScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<ProfileHotelTag>> call, Throwable t) {
 
+                        snackbar = Snackbar
+                                .make(baseLayout, "Failed", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Retry", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        init();
+
+                                    }
+                                });
+                        snackbar.show();
 
                     }
                 });
@@ -311,7 +368,7 @@ public class HotelOptionsScreen extends AppCompatActivity {
                 String authenticationString = "Basic TW9obmlBdmQ6ODIyMDgxOTcwNg==";
                 HotelsDetailsAPI hotelOperation = Util.getClient().create(HotelsDetailsAPI.class);
                 Call<ArrayList<HotelDetails>> response = hotelOperation.getHotelByProfileId(authenticationString,
-                        239);
+                        Constants.PROFILE_DATA_ID);
 
                 response.enqueue(new Callback<ArrayList<HotelDetails>>() {
                     @Override
@@ -334,7 +391,17 @@ public class HotelOptionsScreen extends AppCompatActivity {
                                 else
                                 {
 
+                                    snackbar = Snackbar
+                                            .make(baseLayout, "No Hotels", Snackbar.LENGTH_INDEFINITE)
+                                            .setAction("Retry", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
 
+                                                    init();
+
+                                                }
+                                            });
+                                    snackbar.show();
 
                                 }
                             }catch (Exception e){
@@ -346,6 +413,17 @@ public class HotelOptionsScreen extends AppCompatActivity {
                         else
                         {
 
+                            snackbar = Snackbar
+                                    .make(baseLayout, "Something went wrong", Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("Retry", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+
+                                            init();
+
+                                        }
+                                    });
+                            snackbar.show();
                         }
 
 
@@ -353,12 +431,49 @@ public class HotelOptionsScreen extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ArrayList<HotelDetails>> call, Throwable t) {
+                        snackbar = Snackbar
+                                .make(baseLayout, "Failed", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Retry", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
 
+                                        init();
+
+                                    }
+                                });
+                        snackbar.show();
 
                     }
                 });
             }
         });
     }
+
+    public void init(){
+
+        if(Util.isNetworkAvailable(HotelOptionsScreen.this)){
+
+            if(snackbar!=null){
+                snackbar.dismiss();
+            }
+
+            getTaggedHotels();
+
+        }else{
+            snackbar = Snackbar
+                    .make(baseLayout, "No Connection", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            init();
+
+                        }
+                    });
+            snackbar.show();
+        }
+
+    }
+
 
 }

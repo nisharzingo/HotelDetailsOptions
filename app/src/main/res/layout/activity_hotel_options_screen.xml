@@ -71,6 +71,17 @@
                     android:scaleType="centerCrop"
                     />
 
+
+                <details.hotel.app.hoteldetails.Customs.CustomFonts.TextViewRobotoregular
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:id="@+id/hotel_name_list"
+                    android:text=""
+                    android:textColor="#ffffff"
+                    />
+
             </LinearLayout>
 
             <LinearLayout
